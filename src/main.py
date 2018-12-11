@@ -40,9 +40,9 @@ def get_faded_image(step, image1, image2):
   # result_image = [apply_factors2(step, pixel1, pixel2) for (pixel1, pixel2) in zip(image1.getdata(), image2.getdata()) for (value1, value2) in zip(pixel1, pixel2)]
 
   # Flattenando antes MAIS RAPIDO
-  # image1_data = itertools.chain(*list(image1.getdata())) # flattened
-  # image2_data = itertools.chain(*list(image2.getdata())) # flattened
-  # result_image = [apply_factors(step, value1, value2) for (value1, value2) in zip(image1_data, image2_data)]
+  image1_data = itertools.chain(*list(image1.getdata())) # flattened
+  image2_data = itertools.chain(*list(image2.getdata())) # flattened
+  result_image = [apply_factors(step, value1, value2) for (value1, value2) in zip(image1_data, image2_data)]
 
   # Loop INTERMEDIARIO
   # result_image = []
@@ -101,9 +101,11 @@ def main():
   path_in = './in/*.*'
   path_out = './out/'
 
+  ''' DEBUG
   print(f"NEED {STEPS} STEPS")
   print(f"JUMP IS {JUMP} {list(map(lambda x: x * JUMP, RANGE))}")
   print(f"RANGE HAS {len(RANGE)} STEPS")
+  '''
 
   images = open_images(path_in)
   faded_images = fade_images(images)

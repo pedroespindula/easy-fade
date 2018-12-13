@@ -25,7 +25,7 @@ FADE PROGRESSION
 '''
 
 def open_images(path):
-  return [Image.open(e) for e in glob.glob(path)]
+  return [Image.open(e) for e in glob.glob(os.path.join(path, '*.jpg'))]
 
 def get_faded_image(step, image1, image2):
   # BLACK IMAGE: image2 = Image.frombytes("RGB", (512, 512), bytes([0,0,0]*(512 * 512)))
@@ -84,8 +84,9 @@ def ensure_dirs(path_in, path_out):
     os.mkdir(path_out)
 
 def main():
-  path_in = '../in/'
-  path_out = '../out/'
+  dirname = os.path.dirname(__file__)
+  path_in = os.path.abspath(os.path.join(dirname, '../in/'))
+  path_out = os.path.abspath(os.path.join(dirname, '../out/'))
 
   ensure_dirs(path_in, path_out)
 
@@ -95,7 +96,7 @@ def main():
   print(f"RANGE HAS {len(RANGE)} STEPS")
   '''
 
-  images = open_images(path_in + "*.*")
+  images = open_images(path_in)
   faded_images = fade_images(images)
   save_images(faded_images, path_out)
   save_gif(faded_images, path_out)

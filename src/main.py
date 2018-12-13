@@ -36,35 +36,13 @@ def get_faded_image(step, image1, image2):
     print(f"image {STEPS}/{STEPS} done")
     return image2
 
-  # Sem flattenar antes MAIS LENTO
-  # result_image = [apply_factors2(step, pixel1, pixel2) for (pixel1, pixel2) in zip(image1.getdata(), image2.getdata()) for (value1, value2) in zip(pixel1, pixel2)]
-
-  # Flattenando antes MAIS RAPIDO
   image1_data = itertools.chain(*list(image1.getdata())) # flattened
   image2_data = itertools.chain(*list(image2.getdata())) # flattened
   result_image = [apply_factors(step, value1, value2) for (value1, value2) in zip(image1_data, image2_data)]
 
-  # Loop INTERMEDIARIO
-  # result_image = []
-  # for (pixel1, pixel2) in zip(image1.getdata(), image2.getdata()):
-  #   result_pixel = []
-  #   for (value1, value2) in zip(pixel1, pixel2):
-  #     alpha2 = step * JUMP / 100
-  #     alpha1 = 1 - alpha2
-  #     result_pixel.append(round(value1 * alpha1 + value2 * alpha2))
-  #   result_image.append(result_pixel)
-
-  # flattened = itertools.chain(*result_image)
   print(f"image {step + 1}/{STEPS} done")
 
   return Image.frombytes("RGB", (512, 512), bytes(result_image))
-  # return Image.frombytes("RGB", (512, 512), bytes(flattened))
-
-def apply_factors2(step, pixel1, pixel2):
-  alpha2 = step * JUMP / 100
-  alpha1 = 1 - alpha2
-  return [(lambda x, y: round(x * alpha1 + y * alpha2))(x,y) for (x, y) in zip(pixel1, pixel2)]
-
 
 def apply_factors(step, value1, value2):
   alpha2 = step * JUMP / 100
@@ -96,10 +74,20 @@ def save_gif(images, path):
                  duration=GIF_DURATION,
                  loop=0)
 
+def ensure_dirs(path_in, path_out):
+  if not os.path.exists(path_in):
+    print(path_in)
+    print("Please add an in directory.")
+    exit()
+  if not os.path.exists(path_out):
+    print("Creating out directory.")
+    os.mkdir(path_out)
 
 def main():
-  path_in = './in/*.*'
-  path_out = './out/'
+  path_in = '../in/'
+  path_out = '../out/'
+
+  ensure_dirs(path_in, path_out)
 
   ''' DEBUG
   print(f"NEED {STEPS} STEPS")
@@ -107,7 +95,7 @@ def main():
   print(f"RANGE HAS {len(RANGE)} STEPS")
   '''
 
-  images = open_images(path_in)
+  images = open_images(path_in + "*.*")
   faded_images = fade_images(images)
   save_images(faded_images, path_out)
   save_gif(faded_images, path_out)

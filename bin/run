@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-"$(pwd)/bin/easy_fade"
+python3.6 "$(pwd)/easy_fade/main.py"

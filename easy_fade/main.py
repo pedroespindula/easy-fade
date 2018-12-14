@@ -68,7 +68,7 @@ def save_image(image, path, file_name):
 
 def save_gif(images, path):
   looped_images = images[:-1] + images[-1:0:-1]
-  looped_images[0].save(path + 'image_fade.gif',
+  looped_images[0].save(os.path.join(path, 'image_fade.gif'),
                  save_all=True,
                  append_images=looped_images[1:],
                  duration=GIF_DURATION,

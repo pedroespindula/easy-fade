@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+python3 "$(pwd)/easy_fade/main.py"
